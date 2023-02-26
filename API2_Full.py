@@ -36,17 +36,20 @@ def count_clicks(token, url):
     }
     params = {
         'unit': 'day',
-        'units': '1'
+        'units': '-1'
     }
     response = requests.get(url_full, headers=headers, params=params)
     response.raise_for_status()
     cliks = response.json()['link_clicks'][0]['clicks']
     return cliks
 
-load_dotenv('o.env')
-token = os.environ['TOKEN']
-url = input('Введите ссылку: ')
-if is_bitlink(token, url):
-    print('Количество кликов:', count_clicks(token, url))
-else:
-    print('Ваш битлинк:', shorten_link(token, url))
+
+if __name__ == '__main__':
+    load_dotenv('o.env')
+    token = os.environ['TOKEN']
+    url = input('Введите ссылку: ')
+    if is_bitlink(token, url):
+        print('Количество кликов:', count_clicks(token, url))
+    else:
+        print('Ваш битлинк:', shorten_link(token, url))
+
