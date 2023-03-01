@@ -9,7 +9,7 @@ def is_bitlink(token, url):
     header = {
         'Authorization': token
     }
-    full_url = f'https://api-ssl.bitly.com/v4/bitlinks/ {divided_url.netloc} {divided_url.path}'
+    full_url = f'https://api-ssl.bitly.com/v4/bitlinks/{divided_url.netloc}{divided_url.path}'
     response = requests.get(full_url, headers=header)
     return response.ok
 
@@ -29,10 +29,7 @@ def shorten_link(token, url):
 
 def count_clicks(token, url):
     divided_url = urlparse(url)
-    full_url = f'https://api-ssl.bitly.com/v4/bitlinks/ {divided_url.netloc} {divided_url.path} {"/clicks"}'
-    print(full_url)
-    print(divided_url.netloc)
-    print(divided_url.path)
+    full_url = f'https://api-ssl.bitly.com/v4/bitlinks/{divided_url.netloc}{divided_url.path}/clicks'
     header = {
         'Authorization': token
     }
@@ -42,19 +39,19 @@ def count_clicks(token, url):
     }
     response = requests.get(full_url, headers=header, params=params)
     response.raise_for_status()
-    cliks = response.json()['link_clicks'][0]['clicks']
-    return cliks
+    clicks = response.json()['link_clicks'][0]['clicks']
+    return clicks
 
 
 def main():
-    if __name__ == '__main__':
-        load_dotenv('ID.env')
-        token = os.environ['BITLINK_TOKEN']
-        url = input('Введите ссылку: ')
-        if is_bitlink(token, url):
-            print('Количество кликов:', count_clicks(token, url))
-        else:
-            print('Ваш битлинк:', shorten_link(token, url))
+    load_dotenv()
+    token = os.environ.get('BITLY_TOKEN')
+    url = input('Введите ссылку: ')
+    if is_bitlink(token, url):
+        print('Количество кликов:', count_clicks(token, url))
+    else:
+        print('Ваш битлинк:', shorten_link(token, url))
 
 
-main()
+if __name__ == '__main__':
+    main()
