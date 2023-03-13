@@ -45,7 +45,7 @@ def count_clicks(token, url):
 
 def main():
     load_dotenv()
-    token = os.environ.get('BITLY_TOKEN')
+    token = os.environ['BITLY_TOKEN']
     url = input('Введите ссылку: ')
     if is_bitlink(token, url):
         print('Количество кликов:', count_clicks(token, url))
